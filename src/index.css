@@ -33,7 +33,7 @@ body {
   align-items: center;
   margin:0;
   padding: 0;
-  min-width: 220px;
+  min-width: 270px;
   transition: .7s;
 }
 
@@ -586,7 +586,9 @@ body {
 
 
 .options {
+  position: relative;
   width: 100%;
+  min-width: 270px;
   margin: 0;
   padding: 5px 20px;
   background-color: antiquewhite;
@@ -594,8 +596,21 @@ body {
   justify-content: space-between;
   align-items: center;
 }
+.options h5 {
+  cursor: pointer;
+  letter-spacing: 2px;
+}
+
+@media screen and (max-width:420px) {
+  .options h5 {
+    display: none;
+  }
+}
+  
+
 
 .select {
+  margin-left: 50px;
   padding: 5px;
   background-color: rgb(207, 118, 2);
   color:white;
@@ -615,4 +630,25 @@ body {
 
 .clearBtn:hover {
   background-color: rgb(250, 168, 152);
+}
+
+.fa-sort-alpha-down, .fa-sort-alpha-down-alt {
+  position: absolute;
+  margin: 0;
+  padding: 3px;
+  cursor: pointer;
+  background-color: rgb(211, 219, 223);
+  border-radius: 3px;
+  transition: .3s;
+}
+.fa-sort-alpha-down {
+  left: 10px;
+}
+.fa-sort-alpha-down-alt {
+  left: 40px;
+}
+
+.fa-sort-alpha-down:hover, .fa-sort-alpha-down-alt:hover {
+  background-color: rgb(38, 145, 194);
+  color: #fff;
 }

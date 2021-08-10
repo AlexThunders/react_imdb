@@ -2,7 +2,7 @@
   "name": "imdb",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://AlexThunders.github.io/react_imdb",
+  "homepage": "https://alexthunders.ru/appsR7/2021/imdb/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",

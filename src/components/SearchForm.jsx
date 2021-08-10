@@ -29,7 +29,7 @@ export default function Form() {
   }
 
   const searchFromPortal = (inp) => {
-    searchRequest(inp, selectedValue);
+    searchRequest(inp);
   }
   const closePortal = () => {
     setShowPortal('none')

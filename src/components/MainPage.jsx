@@ -33,8 +33,6 @@ const MainPage = () => {
     }
   },[movies])
 
-  console.log(movies)
-
   return (
     <div className="mainGrid">
       <ScrollPage />

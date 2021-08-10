@@ -22,7 +22,8 @@ const PortalMenu = ({closePortal}) => {
         closePortal()}}>
           celebrities
       </Link>
-      <Link to="/appsR7/2021/imdb/MyMovies" onClick={closePortal}>My favourite movies</Link>
+      <Link to="/appsR7/2021/imdb/MyMovies" onClick={closePortal}>My favourite movies
+      </Link>
       <Link to="/appsR7/2021/imdb/MyTVshows" onClick={closePortal}>My favourite TV shows</Link>
       <Link to="/appsR7/2021/imdb/MyCelebs" onClick={closePortal}>My favourite celebrities</Link>
     </div>,

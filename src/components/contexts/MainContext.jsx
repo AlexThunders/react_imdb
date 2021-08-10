@@ -24,11 +24,11 @@ const MainContextProvider = ({children}) => {
   const [tvPage,setTvPage] = useState(1);
   const [peoplePage,setPeoplePage] = useState(1);
   
-  // const API = 'https://cors-anywhere.herokuapp.com/https://api.themoviedb.org/3';
   const API = 'https://api.themoviedb.org/3';
   const key = 'ace333fddd5f05d5bf871983c3e0d136';
   const img = 'https://image.tmdb.org/t/p/w200/';
-  const popular = `${API}/movie/top_rated?api_key=${key}&language=en-US&page=${moviesPage}`;
+  // const popular = `${API}/movie/top_rated?api_key=${key}&language=en-US&page=${moviesPage}`;
+  const popular = `https://api.themoviedb.org/3/movie/popular?api_key=${key}&language=en-US&language=ru&page=${moviesPage}`;
   const series = `${API}/tv/popular?api_key=${key}&language=en-US&language=ru&page=${tvPage}`;
   const people = `${API}/person/popular?api_key=${key}&language=en-US&language-ru&page=${peoplePage}`;
   
@@ -84,17 +84,18 @@ const MainContextProvider = ({children}) => {
       //delete movies, actors in my lists:
     else {
       if(type === 'movie') {
-        const newList = myList.filter(movie => (movie.popularity !== popularity && movie.id !== id));
+        const newList = myList.filter(movie => (movie.popularity !== popularity));
+        // const newList = myList.filter(movie => (movie.popularity !== popularity && movie.id !== id));
         setMyList(newList);
-        localStorage.setItem('myList',JSON.stringify(myList));
       }
       if(type === 'tv') {
         const newList = myTVlist.filter(tv => (tv.popularity !== popularity && tv.id !== id));
+        // const newList = myTVlist.filter(tv => (tv.popularity !== popularity && tv.id !== id));
         setMyTVlist(newList);
       }
       if(type === 'person') {
-        console.log(myCelebsList)
-        const newList = myCelebsList.filter(person => (person.popularity !== popularity && person.id !== id));
+        const newList = myCelebsList.filter(person => (person.popularity !== popularity ));
+        // const newList = myCelebsList.filter(person => (person.popularity !== popularity && person.id !== id));
         setMyCelebsList(newList);
       }
     }
@@ -111,50 +112,29 @@ const MainContextProvider = ({children}) => {
       localStorage.setItem('myCelebsList',JSON.stringify(myCelebsList));
     }
   },[myList,myTVlist,myCelebsList]);
-
-  async function myRequest(inp,selectedValue) {
-    if(selectedValue === 'all') {
-      const response = await axios.get(`${API}/search/multi?api_key=${key}&language=en-US&language=ru&query=${inp}&page=1&include_adult=false`);
-      setMovies(response.data.results);
-    }
-    if(selectedValue === 'episodes') {
-      const response = await axios.get(`${API}/search/tv?api_key=${key}&language=en-US&language=ru&page=1&query=${inp}&include_adult=false`);
-      setMovies(response.data.results);
-    }
-    if(selectedValue === 'celebs') {
-      const response = await axios.get(`${API}/search/person?api_key=${key}&language=en-US&language=ru&query=${inp}&page=1&include_adult=false`);
-      setMovies(response.data.results);
-    }
+  
+  //SEARCH from main input and on movies at the backside of actors
+  async function myRequest(inp) {
+    const response = await axios.get(`${API}/search/multi?api_key=${key}&language=en-US&language=ru&query=${inp}&page=1&include_adult=false`);
+    setMovies(response.data.results);
   }
   
-  const searchRequest = (inp,selectedValue) => myRequest(inp,selectedValue);
-  
+  const searchRequest = inp => myRequest(inp);
+  const changeFromBackCard = inp => myRequest(inp);
+
+  //CHANGE OPTIONS
   const changeOption = selectedValue => setOption(selectedValue);
-  
+
   useEffect(() => {
     chooseCategories();
   },[option]);
   
   async function chooseCategories() {
     if(option === 'all') {
-
-      const response = await fetch(popular, {
-      method: "GET",
-      mode: "cors",
-      headers: {
-          "Content-Type": "application/json"
-      },
-      // body: JSON.stringify(response)
-    });   
-    console.log(response.json())
+      const response = await axios.get(popular);
+      setMovies(response.data.results);
+      setPageNumber(moviesPage);
     }
-
-
-
-    //   const response = await axios.get(popular);
-    //   setMovies(response.data.results);
-    //   setPageNumber(moviesPage);
-    // }
     if(option === 'episodes') {
       const response = await axios.get(series);
       setMovies(response.data.results);
@@ -167,9 +147,6 @@ const MainContextProvider = ({children}) => {
     }
   }
   
-  const changeFromBackCard = (inp, selectedValue) => {
-    myRequest(inp,selectedValue);
-  }
 
   const incrementPage = () => {
     option === 'all' && setMoviesPage(num => num + 1);
@@ -183,6 +160,7 @@ const MainContextProvider = ({children}) => {
     (option === 'celebs' && pageNumber > 1) && setPeoplePage(num => num - 1);
     chooseCategories()
   }
+
   useEffect(() => {
     chooseCategories();
   },[moviesPage,tvPage,peoplePage])
